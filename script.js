@@ -86,6 +86,7 @@ async function loadThreads(){
     // 👍
 
     card.querySelector(".agree").onclick = async () => {
+      alert("押された！");
 
 
   const { data, error } = await client
