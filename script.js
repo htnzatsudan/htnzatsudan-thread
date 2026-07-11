@@ -318,3 +318,5 @@ completedTab.onclick = () => {
 // 起動
 
 loadThreads();
+
+alert("JS更新確認");
