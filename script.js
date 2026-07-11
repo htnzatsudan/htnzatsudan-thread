@@ -213,17 +213,11 @@ const completeButton = card.querySelector(".complete-button");
 
 console.log("完了ボタン", completeButton);
 
-if (completeButton) {
+completeButton.onclick = async () => {
 
-completeButton.addEventListener("click", async () => {
-alert("完了ボタンの処理開始！");
+  const result = confirm("このスレッドを対応完了にしますか？");
 
-  if(!confirm("このスレッドを対応完了にしますか？")){
-    return;
-  }
-
-
-  if(!confirm("本当に対応完了にしますか？")){
+  if(!result){
     return;
   }
 
@@ -232,7 +226,7 @@ alert("完了ボタンの処理開始！");
     .from("threads")
     .update({
       completed: true,
-      completed_at: new Date()
+      completed_at: new Date().toISOString()
     })
     .eq("id", thread.id);
 
@@ -245,9 +239,7 @@ alert("完了ボタンの処理開始！");
 
   loadThreads();
 
-});
-
-}
+};
 
 
 
