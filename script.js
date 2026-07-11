@@ -183,7 +183,57 @@ async function loadThreads(){
 
 }
 
+async function loadCompletedThreads(){
 
+  const { data, error } = await client
+    .from("threads")
+    .select("*")
+    .eq("completed", true)
+    .order("completed_at", { ascending:false });
+
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+
+  completedList.innerHTML = "";
+
+
+  data.forEach(thread => {
+
+    const card = document.createElement("div");
+
+    card.className = "thread-card";
+
+
+    card.innerHTML = `
+
+      <div class="thread-title">
+        💠 ${thread.title}
+      </div>
+
+
+      <div class="counts">
+        👍 ${thread.agree_count ?? 0}
+        👎 ${thread.disagree_count ?? 0}
+      </div>
+
+
+      <div>
+        対応日時：
+        ${new Date(thread.completed_at).toLocaleString()}
+      </div>
+
+    `;
+
+
+    completedList.appendChild(card);
+
+  });
+
+}
 
 
 // スレ追加
