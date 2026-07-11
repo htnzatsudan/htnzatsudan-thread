@@ -209,7 +209,6 @@ card.querySelector(".agree").onclick = async () => {
 
     card.querySelector(".complete-button").onclick = async () => {
 
-card.querySelector(".complete-button").onclick = async () => {
 
   alert("対応完了押された！");
 
