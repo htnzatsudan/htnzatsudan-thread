@@ -110,11 +110,6 @@ async function loadThreads(){
 
 `;
 
-// 👍
-
-card.querySelector(".agree").onclick = async () => {
-    `;
-
 
 
 // 👍
