@@ -67,7 +67,25 @@ async function loadThreads(){
 
 card.querySelector(".complete-button").onclick = async () => {
 
-  
+  if(!confirm("このスレッドを対応完了にしますか？")){
+    return;
+  }
+
+  if(!confirm("本当に対応完了にしますか？")){
+    return;
+  }
+
+  await client
+    .from("threads")
+    .update({
+      completed: true,
+      completed_at: new Date()
+    })
+    .eq("id", thread.id);
+
+  loadThreads();
+
+};
 
 card.querySelector(".agree").onclick = async () => {
 
@@ -120,19 +138,20 @@ addButton.onclick = async () => {
   }
 
 
-  const { error } = await client
-  .from("threads")
-  .update({
-    completed: true,
-    completed_at: new Date()
-  })
-  .eq("id", thread.id);
+  await client
+    .from("threads")
+    .insert([
+      {
+        title:title
+      }
+    ]);
 
-if(error){
-  alert(error.message);
-  return;
-}
 
-alert("対応完了しました！");
+  threadInput.value = "";
 
-loadThreads();
+
+  loadThreads();
+
+};
+
+
