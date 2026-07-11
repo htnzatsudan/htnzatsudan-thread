@@ -67,12 +67,17 @@ async function loadThreads(){
 
 card.querySelector(".agree").onclick = async () => {
 
-  await client
-    .from("threads")
-    .update({
-      agree_count: thread.agree_count + 1
-    })
-    .eq("id", thread.id);
+  const { error } = await client
+  .from("threads")
+  .update({
+    agree_count: thread.agree_count + 1
+  })
+  .eq("id", thread.id);
+
+if(error){
+  alert(error.message);
+  return;
+}
 
   loadThreads();
 
