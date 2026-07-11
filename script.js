@@ -41,24 +41,56 @@ async function loadThreads(){
 
 
     card.innerHTML = `
-      <div class="thread-title">
-        💠 ${thread.title}
-      </div>
+  <div class="thread-title">
+    💠 ${thread.title}
+  </div>
 
-      <div class="vote-area">
-        <button class="vote-button agree">
-          👍 賛成
-        </button>
+  <div class="counts">
+    👍 ${thread.agree_count}
+    👎 ${thread.disagree_count}
+  </div>
 
-        <button class="vote-button disagree">
-          👎 反対
-        </button>
-      </div>
+  <div class="vote-area">
+    <button class="vote-button agree">
+      👍 賛成
+    </button>
 
-      <button class="complete-button">
-        対応完了
-      </button>
-    `;
+    <button class="vote-button disagree">
+      👎 反対
+    </button>
+  </div>
+
+  <button class="complete-button">
+    対応完了
+  </button>
+`;
+
+card.querySelector(".agree").onclick = async () => {
+
+  await client
+    .from("threads")
+    .update({
+      agree_count: thread.agree_count + 1
+    })
+    .eq("id", thread.id);
+
+  loadThreads();
+
+};
+
+
+card.querySelector(".disagree").onclick = async () => {
+
+  await client
+    .from("threads")
+    .update({
+      disagree_count: thread.disagree_count + 1
+    })
+    .eq("id", thread.id);
+
+  loadThreads();
+
+};
 
 
     threadList.appendChild(card);
