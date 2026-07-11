@@ -211,10 +211,11 @@ card.querySelector(".agree").onclick = async () => {
 
 const completeButton = card.querySelector(".complete-button");
 
-document.title = "完了ボタン確認";
+console.log("完了ボタン", completeButton);
 
-completeButton.onclick = async () => {
+if (completeButton) {
 
+completeButton.addEventListener("click", async () => {
 alert("完了ボタンの処理開始！");
 
   if(!confirm("このスレッドを対応完了にしますか？")){
@@ -244,7 +245,9 @@ alert("完了ボタンの処理開始！");
 
   loadThreads();
 
-};
+});
+
+}
 
 
 
