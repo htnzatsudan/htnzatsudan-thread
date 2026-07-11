@@ -215,6 +215,11 @@ completeButton.addEventListener("click", async (e) => {
 
   e.stopPropagation();
 
+const ok = confirm("本当に対応完了にしますか？");
+
+if(!ok){
+  return;
+}
 
   const { error } = await client
     .from("threads")
