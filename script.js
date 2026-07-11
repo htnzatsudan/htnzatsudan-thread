@@ -211,7 +211,7 @@ card.querySelector(".agree").onclick = async () => {
 
 const completeButton = card.querySelector(".complete-button");
 
-console.log("完了ボタン", completeButton);
+document.title = "完了ボタン確認";
 
 completeButton.onclick = async () => {
 
