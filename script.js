@@ -215,6 +215,8 @@ console.log("完了ボタン", completeButton);
 
 completeButton.onclick = async () => {
 
+alert("完了ボタンの処理開始！");
+
   if(!confirm("このスレッドを対応完了にしますか？")){
     return;
   }
