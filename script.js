@@ -14,6 +14,10 @@ const threadInput = document.getElementById("threadInput");
 const addButton = document.getElementById("addButton");
 const threadList = document.getElementById("threadList");
 
+const completedList = document.getElementById("completedList");
+const votingTab = document.getElementById("votingTab");
+const completedTab = document.getElementById("completedTab");
+const completedPage = document.getElementById("completedPage");
 
 
 async function loadThreads(){
