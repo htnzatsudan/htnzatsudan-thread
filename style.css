@@ -16,6 +16,20 @@ header {
   margin-bottom: 25px;
 }
 
+.tab {
+  background: white;
+  border: 1px solid #b8f0ff;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+
+.tab.active {
+  background: #b8f0ff;
+  color: #333;
+  font-weight: bold;
+}
+
 
 .tab.active {
   background-color: #b8f0ff;
