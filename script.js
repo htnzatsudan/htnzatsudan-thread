@@ -280,11 +280,15 @@ addButton.onclick = async () => {
 
 // タブ切り替え
 
+// タブ切り替え
+
 votingTab.onclick = () => {
 
   threadList.style.display = "block";
-
   completedPage.style.display = "none";
+
+  votingTab.classList.add("active");
+  completedTab.classList.remove("active");
 
   loadThreads();
 
@@ -295,13 +299,14 @@ votingTab.onclick = () => {
 completedTab.onclick = () => {
 
   threadList.style.display = "none";
-
   completedPage.style.display = "block";
+
+  completedTab.classList.add("active");
+  votingTab.classList.remove("active");
 
   loadCompletedThreads();
 
 };
-
 
 
 // 起動
