@@ -300,3 +300,26 @@ addButton.onclick = async () => {
 // 最初の読み込み
 
 loadThreads();
+
+
+votingTab.onclick = () => {
+
+  threadList.style.display = "block";
+
+  completedPage.style.display = "none";
+
+  loadThreads();
+
+};
+
+
+
+completedTab.onclick = () => {
+
+  threadList.style.display = "none";
+
+  completedPage.style.display = "block";
+
+  loadCompletedThreads();
+
+};
