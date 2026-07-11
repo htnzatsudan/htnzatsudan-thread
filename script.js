@@ -138,22 +138,19 @@ addButton.onclick = async () => {
   }
 
 
-  await client
-    .from("threads")
-    .insert([
-      {
-        title:title
-      }
-    ]);
+  const { error } = await client
+  .from("threads")
+  .update({
+    completed: true,
+    completed_at: new Date()
+  })
+  .eq("id", thread.id);
 
+if(error){
+  alert(error.message);
+  return;
+}
 
-  threadInput.value = "";
-
-
-  loadThreads();
-
-};
-
-
+alert("対応完了しました！");
 
 loadThreads();
