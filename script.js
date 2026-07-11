@@ -108,6 +108,8 @@ async function loadThreads(){
   対応完了
 </button>
 
+`;
+
 // 👍
 
 card.querySelector(".agree").onclick = async () => {
