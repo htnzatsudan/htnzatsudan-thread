@@ -110,12 +110,23 @@ async function loadThreads(){
     card.querySelector(".disagree").onclick = async () => {
 
 
-      const { error } = await client
-        .from("threads")
-        .update({
-          disagree_count: (thread.disagree_count ?? 0) + 1
-        })
-        .eq("id", thread.id);
+      const { data, error } = await client
+  .from("threads")
+  .update({
+    agree_count: (thread.agree_count ?? 0) + 1
+  })
+  .eq("id", thread.id)
+  .select();
+
+
+console.log(data);
+console.log(error);
+
+
+if(error){
+  alert(error.message);
+  return;
+}
 
 
       if(error){
