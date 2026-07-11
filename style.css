@@ -17,6 +17,13 @@ header {
 }
 
 
+.tab.active {
+  background-color: #b8f0ff;
+  color: #333;
+  font-weight: bold;
+}
+
+
 h1 {
   color: #00a8a8;
   font-size: 28px;
