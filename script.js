@@ -138,13 +138,18 @@ addButton.onclick = async () => {
   }
 
 
-  await client
-    .from("threads")
-    .insert([
-      {
-        title:title
-      }
-    ]);
+  const { error } = await client
+  .from("threads")
+  .insert([
+    {
+      title:title
+    }
+  ]);
+
+if(error){
+  alert(error.message);
+  return;
+}
 
 
   threadInput.value = "";
