@@ -9,16 +9,19 @@ const client = supabase.createClient(
 );
 
 
-
 const threadInput = document.getElementById("threadInput");
 const addButton = document.getElementById("addButton");
-const threadList = document.getElementById("threadList");
 
+const threadList = document.getElementById("threadList");
 const completedList = document.getElementById("completedList");
+
 const votingTab = document.getElementById("votingTab");
 const completedTab = document.getElementById("completedTab");
 const completedPage = document.getElementById("completedPage");
 
+
+
+// 投票中一覧
 
 async function loadThreads(){
 
@@ -40,6 +43,7 @@ async function loadThreads(){
 
   data.forEach(thread => {
 
+
     const card = document.createElement("div");
 
     card.className = "thread-card";
@@ -50,7 +54,6 @@ async function loadThreads(){
       <div class="thread-title">
         💠 ${thread.title}
       </div>
-
 
       <div class="counts">
         👍 ${thread.agree_count ?? 0}
@@ -80,7 +83,7 @@ async function loadThreads(){
 
 
 
-    // 👍 賛成
+    // 👍
 
     card.querySelector(".agree").onclick = async () => {
 
@@ -105,28 +108,17 @@ async function loadThreads(){
 
 
 
-    // 👎 反対
+    // 👎
 
     card.querySelector(".disagree").onclick = async () => {
 
 
-      const { data, error } = await client
-  .from("threads")
-  .update({
-    agree_count: (thread.agree_count ?? 0) + 1
-  })
-  .eq("id", thread.id)
-  .select();
-
-
-console.log(data);
-console.log(error);
-
-
-if(error){
-  alert(error.message);
-  return;
-}
+      const { error } = await client
+        .from("threads")
+        .update({
+          disagree_count: (thread.disagree_count ?? 0) + 1
+        })
+        .eq("id", thread.id);
 
 
       if(error){
@@ -156,32 +148,22 @@ if(error){
       }
 
 
-
       const { error } = await client
         .from("threads")
         .update({
-
-          completed: true,
-
-          completed_at: new Date()
-
+          completed:true,
+          completed_at:new Date()
         })
         .eq("id", thread.id);
 
 
-
       if(error){
-
         alert(error.message);
-
         return;
-
       }
 
 
-
       loadThreads();
-
 
     };
 
@@ -194,7 +176,12 @@ if(error){
 
 }
 
+
+
+// 対応済み一覧
+
 async function loadCompletedThreads(){
+
 
   const { data, error } = await client
     .from("threads")
@@ -214,7 +201,9 @@ async function loadCompletedThreads(){
 
   data.forEach(thread => {
 
+
     const card = document.createElement("div");
+
 
     card.className = "thread-card";
 
@@ -242,9 +231,11 @@ async function loadCompletedThreads(){
 
     completedList.appendChild(card);
 
+
   });
 
 }
+
 
 
 // スレ追加
@@ -255,63 +246,39 @@ addButton.onclick = async () => {
   const title = threadInput.value.trim();
 
 
-
   if(!title){
-
     return;
-
   }
-
 
 
   const { error } = await client
-
     .from("threads")
-
     .insert([
-
       {
-
         title:title,
-
         agree_count:0,
-
         disagree_count:0,
-
         completed:false
-
       }
-
     ]);
 
 
-
   if(error){
-
     alert(error.message);
-
     return;
-
   }
-
 
 
   threadInput.value = "";
 
 
-
   loadThreads();
-
 
 };
 
 
 
-
-// 最初の読み込み
-
-loadThreads();
-
+// タブ切り替え
 
 votingTab.onclick = () => {
 
@@ -334,3 +301,9 @@ completedTab.onclick = () => {
   loadCompletedThreads();
 
 };
+
+
+
+// 起動
+
+loadThreads();
