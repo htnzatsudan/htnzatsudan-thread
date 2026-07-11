@@ -211,15 +211,9 @@ card.querySelector(".agree").onclick = async () => {
 
 const completeButton = card.querySelector(".complete-button");
 
-console.log("完了ボタン", completeButton);
+completeButton.addEventListener("click", async (e) => {
 
-completeButton.onclick = async () => {
-
-  const result = confirm("このスレッドを対応完了にしますか？");
-
-  if(!result){
-    return;
-  }
+  e.stopPropagation();
 
 
   const { error } = await client
@@ -239,7 +233,7 @@ completeButton.onclick = async () => {
 
   loadThreads();
 
-};
+});
 
 
 
