@@ -211,15 +211,14 @@ card.querySelector(".agree").onclick = async () => {
 
 const completeButton = card.querySelector(".complete-button");
 
-completeButton.addEventListener("click", async (e) => {
+completeButton.onclick = async () => {
 
-  e.stopPropagation();
+  const ok = confirm("本当に対応完了にしますか？");
 
-const ok = confirm("本当に対応完了にしますか？");
+  if(!ok){
+    return;
+  }
 
-if(!ok){
-  return;
-}
 
   const { error } = await client
     .from("threads")
@@ -238,8 +237,7 @@ if(!ok){
 
   loadThreads();
 
-});
-
+};
 
 
     threadList.appendChild(card);
