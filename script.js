@@ -20,6 +20,33 @@ const completedTab = document.getElementById("completedTab");
 const completedPage = document.getElementById("completedPage");
 
 
+function getVote(threadId){
+
+  return localStorage.getItem(
+    "vote_" + threadId
+  );
+
+}
+
+
+function setVote(threadId, vote){
+
+  localStorage.setItem(
+    "vote_" + threadId,
+    vote
+  );
+
+}
+
+
+function removeVote(threadId){
+
+  localStorage.removeItem(
+    "vote_" + threadId
+  );
+
+}
+
 
 // 投票中一覧
 
@@ -87,11 +114,34 @@ async function loadThreads(){
 
 card.querySelector(".agree").onclick = async () => {
 
-  const { data, error } = await client
+
+  const oldVote = getVote(thread.id);
+
+
+  if(oldVote === "agree"){
+    return;
+  }
+
+
+  const updates = {
+
+    agree_count: (thread.agree_count ?? 0) + 1
+
+  };
+
+
+  if(oldVote === "disagree"){
+
+    updates.disagree_count =
+      (thread.disagree_count ?? 0) - 1;
+
+  }
+
+
+  const { error } = await client
     .from("threads")
-    .select("agree_count")
-    .eq("id", thread.id)
-    .single();
+    .update(updates)
+    .eq("id", thread.id);
 
 
   if(error){
@@ -100,18 +150,7 @@ card.querySelector(".agree").onclick = async () => {
   }
 
 
-  const { error: updateError } = await client
-    .from("threads")
-    .update({
-      agree_count: (data.agree_count ?? 0) + 1
-    })
-    .eq("id", thread.id);
-
-
-  if(updateError){
-    alert(updateError.message);
-    return;
-  }
+  setVote(thread.id,"agree");
 
 
   loadThreads();
@@ -120,29 +159,50 @@ card.querySelector(".agree").onclick = async () => {
 
 
 
-    // 👎
-
     card.querySelector(".disagree").onclick = async () => {
 
 
-      const { error } = await client
-        .from("threads")
-        .update({
-          disagree_count: (thread.disagree_count ?? 0) + 1
-        })
-        .eq("id", thread.id);
+  const oldVote = getVote(thread.id);
 
 
-      if(error){
-        alert(error.message);
-        return;
-      }
+  if(oldVote === "disagree"){
+    return;
+  }
 
 
-      loadThreads();
+  const updates = {
 
-    };
+    disagree_count: (thread.disagree_count ?? 0) + 1
 
+  };
+
+
+  if(oldVote === "agree"){
+
+    updates.agree_count =
+      (thread.agree_count ?? 0) - 1;
+
+  }
+
+
+  const { error } = await client
+    .from("threads")
+    .update(updates)
+    .eq("id", thread.id);
+
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+
+  setVote(thread.id,"disagree");
+
+
+  loadThreads();
+
+};
 
 
     // 対応完了
