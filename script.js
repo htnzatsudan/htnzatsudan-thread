@@ -21,11 +21,12 @@ async function loadThreads(){
   const { data, error } = await client
     .from("threads")
     .select("*")
+    .eq("completed", false)
     .order("created_at", { ascending:false });
 
 
   if(error){
-    console.log(error);
+    alert(error.message);
     return;
   }
 
@@ -41,86 +42,138 @@ async function loadThreads(){
 
 
     card.innerHTML = `
-  <div class="thread-title">
-    💠 ${thread.title}
-  </div>
 
-  <div class="counts">
-    👍 ${thread.agree_count}
-    👎 ${thread.disagree_count}
-  </div>
-
-  <div class="vote-area">
-    <button class="vote-button agree">
-      👍 賛成
-    </button>
-
-    <button class="vote-button disagree">
-      👎 反対
-    </button>
-  </div>
-
-  <button class="complete-button">
-    対応完了
-  </button>
-`;
-
-card.querySelector(".complete-button").onclick = async () => {
-
-  if(!confirm("このスレッドを対応完了にしますか？")){
-    return;
-  }
-
-  if(!confirm("本当に対応完了にしますか？")){
-    return;
-  }
-
-  await client
-    .from("threads")
-    .update({
-      completed: true,
-      completed_at: new Date()
-    })
-    .eq("id", thread.id);
-
-  loadThreads();
-
-};
-
-card.querySelector(".agree").onclick = async () => {
-
-  const { error } = await client
-  .from("threads")
-  .update({
-    agree_count: thread.agree_count + 1
-  })
-  .eq("id", thread.id);
-
-if(error){
-  alert(error.message);
-  return;
-}
-
-  loadThreads();
-
-};
+      <div class="thread-title">
+        💠 ${thread.title}
+      </div>
 
 
-card.querySelector(".disagree").onclick = async () => {
+      <div class="counts">
+        👍 ${thread.agree_count ?? 0}
+        👎 ${thread.disagree_count ?? 0}
+      </div>
 
-  await client
-    .from("threads")
-    .update({
-      disagree_count: thread.disagree_count + 1
-    })
-    .eq("id", thread.id);
 
-  loadThreads();
+      <div class="vote-area">
 
-};
+        <button class="vote-button agree">
+          👍 賛成
+        </button>
+
+
+        <button class="vote-button disagree">
+          👎 反対
+        </button>
+
+      </div>
+
+
+      <button class="complete-button">
+        対応完了
+      </button>
+
+    `;
+
+
+
+    // 👍 賛成
+
+    card.querySelector(".agree").onclick = async () => {
+
+
+      const { error } = await client
+        .from("threads")
+        .update({
+          agree_count: (thread.agree_count ?? 0) + 1
+        })
+        .eq("id", thread.id);
+
+
+      if(error){
+        alert(error.message);
+        return;
+      }
+
+
+      loadThreads();
+
+    };
+
+
+
+    // 👎 反対
+
+    card.querySelector(".disagree").onclick = async () => {
+
+
+      const { error } = await client
+        .from("threads")
+        .update({
+          disagree_count: (thread.disagree_count ?? 0) + 1
+        })
+        .eq("id", thread.id);
+
+
+      if(error){
+        alert(error.message);
+        return;
+      }
+
+
+      loadThreads();
+
+    };
+
+
+
+    // 対応完了
+
+    card.querySelector(".complete-button").onclick = async () => {
+
+
+      if(!confirm("このスレッドを対応完了にしますか？")){
+        return;
+      }
+
+
+      if(!confirm("本当に対応完了にしますか？")){
+        return;
+      }
+
+
+
+      const { error } = await client
+        .from("threads")
+        .update({
+
+          completed: true,
+
+          completed_at: new Date()
+
+        })
+        .eq("id", thread.id);
+
+
+
+      if(error){
+
+        alert(error.message);
+
+        return;
+
+      }
+
+
+
+      loadThreads();
+
+
+    };
+
 
 
     threadList.appendChild(card);
+
 
   });
 
@@ -128,35 +181,68 @@ card.querySelector(".disagree").onclick = async () => {
 
 
 
+
+// スレ追加
+
 addButton.onclick = async () => {
+
 
   const title = threadInput.value.trim();
 
 
+
   if(!title){
+
     return;
+
   }
 
 
-  const { error } = await client
-  .from("threads")
-  .insert([
-    {
-      title:title
-    }
-  ]);
 
-if(error){
-  alert(error.message);
-  return;
-}
+  const { error } = await client
+
+    .from("threads")
+
+    .insert([
+
+      {
+
+        title:title,
+
+        agree_count:0,
+
+        disagree_count:0,
+
+        completed:false
+
+      }
+
+    ]);
+
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
 
 
   threadInput.value = "";
 
 
+
   loadThreads();
+
 
 };
 
 
+
+
+// 最初の読み込み
+
+loadThreads();
