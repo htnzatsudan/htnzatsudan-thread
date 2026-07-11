@@ -83,27 +83,33 @@ async function loadThreads(){
 
 
 
-    // 👍
+// 👍
 
-    card.querySelector(".agree").onclick = async () => {
-      alert("押された！");
-
+card.querySelector(".agree").onclick = async () => {
 
   const { data, error } = await client
     .from("threads")
-    .update({
-      agree_count: (thread.agree_count ?? 0) + 1
-    })
+    .select("agree_count")
     .eq("id", thread.id)
-    .select();
-
-
-  console.log("更新結果", data);
-  console.log("エラー", error);
+    .single();
 
 
   if(error){
     alert(error.message);
+    return;
+  }
+
+
+  const { error: updateError } = await client
+    .from("threads")
+    .update({
+      agree_count: (data.agree_count ?? 0) + 1
+    })
+    .eq("id", thread.id);
+
+
+  if(updateError){
+    alert(updateError.message);
     return;
   }
 
