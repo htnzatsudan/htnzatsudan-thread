@@ -104,47 +104,9 @@ async function loadThreads(){
 
      
 
-// 対応完了
-
-card.querySelector(".complete-button").onclick = async () => {
-
-  if(!confirm("このスレッドを対応完了にしますか？")){
-
-    return;
-
-  }
-
-  if(!confirm("本当に対応完了にしますか？")){
-
-    return;
-
-  }
-
-  const { error } = await client
-
-    .from("threads")
-
-    .update({
-
-      completed:true,
-
-      completed_at:new Date()
-
-    })
-
-    .eq("id", thread.id);
-
-  if(error){
-
-    alert(error.message);
-
-    return;
-
-  }
-
-  loadThreads();
-
-};
+<button class="complete-button">
+  対応完了
+</button>
 
 // 👍
 
