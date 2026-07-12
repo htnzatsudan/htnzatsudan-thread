@@ -216,28 +216,33 @@ completeButton.addEventListener("click", async (e) => {
   e.stopPropagation();
 
 
-  if(completeButton.textContent !== "本当に完了する？"){
+  if(completeButton.textContent === "本当に完了する？"){
+
+    const { error } = await client
+      .from("threads")
+      .update({
+        completed: true,
+        completed_at: new Date().toISOString()
+      })
+      .eq("id", thread.id);
+
+
+    if(error){
+      alert(error.message);
+      return;
+    }
+
+    loadThreads();
+
+  }else{
+
     completeButton.textContent = "本当に完了する？";
-    return;
+
+    setTimeout(() => {
+      completeButton.textContent = "対応完了";
+    }, 3000);
+
   }
-
-
-  const { error } = await client
-    .from("threads")
-    .update({
-      completed: true,
-      completed_at: new Date().toISOString()
-    })
-    .eq("id", thread.id);
-
-
-  if(error){
-    alert(error.message);
-    return;
-  }
-
-
-  loadThreads();
 
 });
 
