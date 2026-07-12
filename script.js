@@ -211,33 +211,28 @@ card.querySelector(".agree").onclick = async () => {
 
 const completeButton = card.querySelector(".complete-button");
 
-completeButton.addEventListener("click", function(){
+completeButton.addEventListener("click", async (e) => {
 
-  const ok = confirm("本当に対応完了にしますか？");
+  e.stopPropagation();
 
-  if(!ok){
-    return;
-  }
-
-  client
+  const { error } = await client
     .from("threads")
     .update({
       completed: true,
       completed_at: new Date().toISOString()
     })
-    .eq("id", thread.id)
-    .then(({ error }) => {
+    .eq("id", thread.id);
 
-      if(error){
-        alert(error.message);
-        return;
-      }
+  if(error){
+    alert(error.message);
+    return;
+  }
 
-      loadThreads();
-
-    });
+  loadThreads();
 
 });
+
+
 
 
     threadList.appendChild(card);
