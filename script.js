@@ -214,6 +214,10 @@ const completeButton = card.querySelector(".complete-button");
 completeButton.addEventListener("click", async (e) => {
 
   e.stopPropagation();
+  
+  if(!confirm("本当に対応完了にしますか？")){
+  return;
+}
 
   const { error } = await client
     .from("threads")
