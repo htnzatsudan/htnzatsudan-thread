@@ -1,7 +1,5 @@
-const SUPABASE_URL = "https://itnjegwjltlnkbgjqgsa.supabase.co";
-
-const SUPABASE_KEY = "sb_publishable_GhWWWi0KCrBaixNtkm2nAQ_ijWxWuFd";
-
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY;
 
 const client = supabase.createClient(
   SUPABASE_URL,
