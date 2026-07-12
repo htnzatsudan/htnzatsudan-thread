@@ -214,10 +214,13 @@ const completeButton = card.querySelector(".complete-button");
 completeButton.addEventListener("click", async (e) => {
 
   e.stopPropagation();
-  
-  if(!confirm("本当に対応完了にしますか？")){
-  return;
-}
+
+
+  if(completeButton.textContent !== "本当に完了する？"){
+    completeButton.textContent = "本当に完了する？";
+    return;
+  }
+
 
   const { error } = await client
     .from("threads")
@@ -227,10 +230,12 @@ completeButton.addEventListener("click", async (e) => {
     })
     .eq("id", thread.id);
 
+
   if(error){
     alert(error.message);
     return;
   }
+
 
   loadThreads();
 
