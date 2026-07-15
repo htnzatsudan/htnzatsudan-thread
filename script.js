@@ -17,6 +17,7 @@ const votingTab = document.getElementById("votingTab");
 const completedTab = document.getElementById("completedTab");
 const completedPage = document.getElementById("completedPage");
 
+const waitingCount = document.getElementById("waitingCount");
 
 function getVote(threadId){
 
@@ -62,6 +63,7 @@ async function loadThreads(){
     return;
   }
 
+waitingCount.textContent = `現在：${data.length}件`;
 
   threadList.innerHTML = "";
 
