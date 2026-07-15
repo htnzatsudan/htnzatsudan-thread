@@ -78,6 +78,14 @@ h1 {
 }
 
 
+#waitingCount {
+  text-align: center;
+  color: #00a8a8;
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
 
 .add-area {
   display: flex;
